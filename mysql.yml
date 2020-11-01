@@ -1,0 +1,31 @@
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: znmysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql8
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql8
+    spec:
+      containers:
+      - image: yenaing/mysql8
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: nay
+        - name: MYSQL_DATABASE
+          value: my_db
+        - name: MYSQL_USER
+          value: db_user
+        - name: MYSQL_PASSWORD
+          value: .mypwd
+        args: ["--default-authentication-plugin=mysql_native_password"]
+        ports:
+        - containerPort: 3306
+          name: mysql8
