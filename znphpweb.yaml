@@ -1,0 +1,43 @@
+apiVersion: apps/v-1 #version of the API to use
+kind: Deployment #What kind of object we're deploying
+metadata: #information about our object we're deploying
+  name: znphp-deployment #Name of the deployment
+  labels: #A tag on the deployments created
+    app: znphp
+spec: #specifications for our object
+  replicas: 2 #The number of pods that should always be running
+  selector: #which pods the replica set should be responsible for
+    matchLabels:
+      app: znphp #any pods with labels matching this I'm responsible for.
+  template: #The pod template that gets deployed
+    metadata:
+      labels: #A tag on the replica sets created
+        app: znphp
+    spec:
+      containers:
+      - name: znphp-container #the name of the container within the pod
+        image: yenaing/php72 #which container image should be pulled
+         ports:
+        - containerPort: 80 #the port of the container within the pod
+        volumeMounts:
+        - name: hostvol
+          mountPath: /var/www/html/
+      volumes:
+        - name: hostvol
+          persistentVolumeClaim:
+            # PVC name you created
+            claimName: znphp-pvc
+---            
+apiVersion: v1
+kind: Service
+metadata:
+  name: znphp-svc
+  labels:
+    run: znphp-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    protocol: TCP
+  selector:
+    app: znphp
