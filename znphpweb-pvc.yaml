@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # any PVC name
+  name: znphp-pvc
+spec:
+  storageClassName: znphp07
+  accessModes:
+  # ReadWriteMany(RW from multi nodes), ReadWriteOnce(RW from a node), ReadOnly$
+    - ReadWriteMany
+  resources:
+    requests:
+       # storage size to use
+      storage: 5Gi
