@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # any PVC name
+  name: znmysql-pv
+spec:
+  storageClassName: zn21
+  accessModes:
+  # ReadWriteMany(RW from multi nodes), ReadWriteOnce(RW from a node), ReadOnly$
+    - ReadWriteMany
+  resources:
+    requests:
+       # storage size to use
+      storage: 5Gi
